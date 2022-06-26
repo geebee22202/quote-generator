@@ -28,6 +28,16 @@ function newQuote() {
   quoteText.textContent = quote.text;
 }
 
+//Tweet quote
+function tweetQuote() {
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteText.textContent} - ${authorText.textContent}`;
+  window.open(twitterUrl, "_blank");
+}
+
+//Event listeners
+newQuoteBtn.addEventListener("click", newQuote);
+twitterBtn.addEventListener("click", tweetQuote);
+
 // Get quotes from API
 async function getQuotes() {
   const apiUrl = "https://type.fit/api/quotes";
@@ -41,8 +51,6 @@ async function getQuotes() {
     // Catch error here
   }
 }
-
-
 
 //On Load
 getQuotes();
