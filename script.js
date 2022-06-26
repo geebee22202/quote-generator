@@ -3,11 +3,25 @@ const quoteText = document.getElementById("quote");
 const authorText = document.getElementById("author");
 const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("new-quote");
+const loader = document.getElementById("loader");
 
 let apiQuotes = [];
 
+//Show loading
+function loading() {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+}
+
+//Hide loading
+function complete() {
+  loader.hidden = true;
+  quoteContainer.hidden = false;
+}
+
 //Show new quote
 function newQuote() {
+  loading();
   //Pick a random quote from API quotes array
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
 
@@ -19,13 +33,14 @@ function newQuote() {
   }
 
   //check quote length to determine styling
-  if (quote.text.length > 90) {
+  if (quote.text.length > 100) {
     quoteText.classList.add("long-quote");
   } else {
     quoteText.classList.remove("long-quote");
   }
-
+  //Set Quote, hide loader
   quoteText.textContent = quote.text;
+  complete();
 }
 
 //Tweet quote
@@ -40,6 +55,7 @@ twitterBtn.addEventListener("click", tweetQuote);
 
 // Get quotes from API
 async function getQuotes() {
+  loading();
   const apiUrl = "https://type.fit/api/quotes";
   try {
     //response value will not be set until the api has been retrieved; otherwise would cause error
