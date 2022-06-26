@@ -7,21 +7,19 @@ const loader = document.getElementById("loader");
 
 let apiQuotes = [];
 
-//Show loading
-function loading() {
+function showLoadingSpinner() {
   loader.hidden = false;
   quoteContainer.hidden = true;
 }
 
-//Hide loading
-function complete() {
+function removeLoadingSpinner() {
   loader.hidden = true;
   quoteContainer.hidden = false;
 }
 
 //Show new quote
 function newQuote() {
-  loading();
+  showLoadingSpinner();
   //Pick a random quote from API quotes array
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
 
@@ -40,7 +38,7 @@ function newQuote() {
   }
   //Set Quote, hide loader
   quoteText.textContent = quote.text;
-  complete();
+  removeLoadingSpinner();
 }
 
 //Tweet quote
@@ -53,9 +51,8 @@ function tweetQuote() {
 newQuoteBtn.addEventListener("click", newQuote);
 twitterBtn.addEventListener("click", tweetQuote);
 
-// Get quotes from API
-async function getQuotes() {
-  loading();
+async function getApiQuotes() {
+  showLoadingSpinner();
   const apiUrl = "https://type.fit/api/quotes";
   try {
     //response value will not be set until the api has been retrieved; otherwise would cause error
@@ -65,8 +62,9 @@ async function getQuotes() {
     newQuote();
   } catch (error) {
     // Catch error here
+    getApiQuotes()
   }
 }
 
 //On Load
-getQuotes();
+getApiQuotes();
